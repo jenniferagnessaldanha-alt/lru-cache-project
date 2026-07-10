@@ -21,14 +21,6 @@ class Node:
 
 
 class DoublyLinkedList:
-    """
-    Doubly linked list using sentinel (dummy) head and tail nodes.
-
-    Layout:  head <-> [most recent] <-> ... <-> [least recent] <-> tail
-
-    Using sentinels means add/remove never has to check "is this the
-    first/last real node?" — there's always a real prev/next to link to.
-    """
 
     def __init__(self):
         self.head = Node()  # sentinel, no real data
@@ -36,16 +28,31 @@ class DoublyLinkedList:
         self.head.next = self.tail
         self.tail.prev = self.head
         self.size = 0
+    def __len__(self):
+        """Returns the current number of elements in the list."""
+        return self.size
 
-    def add_to_head(self, node):
+    def __str__(self):
+        """Returns a user-friendly string representation of the list."""
+        nodes = []
+        current = self.head.next
+        while current != self.tail:
+            nodes.append(f"({current.key}: {current.value})")
+            current = current.next
+        return " -> ".join(nodes) if nodes else "Empty List"
+
+    def __repr__(self):
+        """Returns an unambiguous string representation for debugging."""
+        return f"DoublyLinkedList(size={self.size}, items={self.__str__()})"
+    def add_to_front(self, node):
         """Insert `node` right after the head sentinel (most recently used position)."""
         old_first=self.head.next
         node.prev=self.head
-        nodde.next=old_first
+        node.next=old_first
 
         self.head.next=node
         old_first.prev=node
-        self._size +=1
+        self.size += 1
         
 
     def remove(self, node):
@@ -54,12 +61,12 @@ class DoublyLinkedList:
         next_node=node.next
         prev_node.next=next_node
         next_node.prev=prev_node
-        node'prev=None
+        node.prev=None
         node.next=None
-        self._size -=1
+        self.size -= 1
         
 
-    def remove_tail(self):
+    def remove_last(self):
         """
         Remove and return the node just before the tail sentinel
         (the least recently used real node). Returns None if list is empty.
@@ -71,7 +78,7 @@ class DoublyLinkedList:
         return tail_node
         
 
-    def move_to_head(self, node):
+    def move_to_front(self, node):
         """Move an existing node to the head position (mark as most recently used)."""
         self.remove(node)
         self.add_to_head(node)
