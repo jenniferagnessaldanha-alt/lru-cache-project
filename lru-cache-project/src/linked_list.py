@@ -39,26 +39,42 @@ class DoublyLinkedList:
 
     def add_to_head(self, node):
         """Insert `node` right after the head sentinel (most recently used position)."""
-        # TODO: implement
-        raise NotImplementedError
+        old_first=self.head.next
+        node.prev=self.head
+        nodde.next=old_first
+
+        self.head.next=node
+        old_first.prev=node
+        self._size +=1
+        
 
     def remove(self, node):
         """Unlink `node` from wherever it currently is in the list."""
-        # TODO: implement
-        raise NotImplementedError
+        prev_node=node.prev
+        next_node=node.next
+        prev_node.next=next_node
+        next_node.prev=prev_node
+        node'prev=None
+        node.next=None
+        self._size -=1
+        
 
     def remove_tail(self):
         """
         Remove and return the node just before the tail sentinel
         (the least recently used real node). Returns None if list is empty.
         """
-        # TODO: implement
-        raise NotImplementedError
+        if self.head.next==self.tail:
+            return None
+        tail_node=self.tail.prev
+        self.remove(tail_node)
+        return tail_node
+        
 
     def move_to_head(self, node):
         """Move an existing node to the head position (mark as most recently used)."""
-        # TODO: implement (hint: this is just remove() + add_to_head())
-        raise NotImplementedError
+        self.remove(node)
+        self.add_to_head(node)
 
     def is_empty(self):
         return self.size == 0
