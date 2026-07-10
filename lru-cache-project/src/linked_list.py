@@ -94,3 +94,9 @@ class DoublyLinkedList:
             result.append(current.key)
             current = current.next
         return result
+    def get(self, key):
+    if key not in self._map:
+        return -1
+    node = self._map[key]
+    self._list.move_to_front(node)
+    return node.value
