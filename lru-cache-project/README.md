@@ -6,12 +6,12 @@ doubly linked list, achieving O(1) time complexity for both `get` and `put`.
 Built as a DSA practice project for Google STEP interview prep.
 
 ## Status
-- [ ] Day 1 — Doubly linked list with sentinel nodes
-- [ ] Day 2 — Basic get/put logic
-- [ ] Day 3 — Eviction logic
-- [ ] Day 4 — Full test suite
-- [ ] Day 5 — Naive O(n) baseline cache
-- [ ] Day 6 — Benchmarking (LRU vs naive)
+- [  ✔️] Day 1 — Doubly linked list with sentinel nodes
+- [  ✔️] Day 2 — Basic get/put logic
+- [  ✔️] Day 3 — Eviction logic
+- [ ✔️ ] Day 4 — Full test suite
+- [  ✔️] Day 5 — Naive O(n) baseline cache
+- [ ✔️] Day 6 — Benchmarking (LRU vs naive)
 - [ ] Day 7 — Extension feature
 - [ ] Day 8 — Java reimplementation
 - [ ] Day 9 — Documentation
