@@ -1,40 +1,61 @@
 """
-DAY 6 TASKS: benchmark LRUCache vs NaiveCache and plot the results.
-Run with: python benchmark/benchmark.py
+Benchmark: LRUCache (O(1)) vs NaiveCache (O(n))
+
+Run with:
+    python -m benchmark.benchmark
 """
 
-import sys
-import os
+import random
 import time
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from src.lru_cache import LRUCache
 from src.naive_cache import NaiveCache
 
-# import matplotlib only when actually plotting (Day 6)
-# import matplotlib.pyplot as plt
+
+def run_put_trial(cache_cls, capacity, num_operations):
+    """Time `num_operations` put() calls, with keys wide enough to force evictions."""
+    cache = cache_cls(capacity)
+    keys = [random.randint(0, capacity * 4) for _ in range(num_operations)]
+
+    start = time.perf_counter()
+    for key in keys:
+        cache.put(key, key)
+    end = time.perf_counter()
+
+    return end - start
 
 
-def time_cache(cache_class, num_ops, capacity=1000):
-    """Run num_ops put/get operations on the given cache and return elapsed time."""
-    # TODO (Day 6): implement timing loop using time.perf_counter()
-    raise NotImplementedError
+def run_get_trial(cache_cls, capacity, num_operations):
+    """Pre-populate a cache, then time `num_operations` get() calls against it."""
+    cache = cache_cls(capacity)
+    for i in range(capacity):
+        cache.put(i, i)
+
+    keys = [random.randint(0, capacity - 1) for _ in range(num_operations)]
+
+    start = time.perf_counter()
+    for key in keys:
+        cache.get(key)
+    end = time.perf_counter()
+
+    return end - start
 
 
-def run_benchmark():
-    op_counts = [100, 500, 1000, 5000, 10000]
-    lru_times = []
-    naive_times = []
+def main():
+    sizes = [100, 1000, 5000]
+    num_operations = 5000
 
-    for n in op_counts:
-        # TODO (Day 6): call time_cache() for both cache types, append results
-        pass
+    print(f"{'Capacity':<10}{'LRU put (s)':<15}{'Naive put (s)':<15}{'LRU get (s)':<15}{'Naive get (s)':<15}")
+    print("-" * 70)
 
-    # TODO (Day 6): plot op_counts vs lru_times and naive_times with matplotlib
-    # TODO (Day 6): save to benchmark/results.png
-    print("Benchmark not yet implemented — see TODOs.")
+    for capacity in sizes:
+        lru_put = run_put_trial(LRUCache, capacity, num_operations)
+        naive_put = run_put_trial(NaiveCache, capacity, num_operations)
+        lru_get = run_get_trial(LRUCache, capacity, num_operations)
+        naive_get = run_get_trial(NaiveCache, capacity, num_operations)
+
+        print(f"{capacity:<10}{lru_put:<15.5f}{naive_put:<15.5f}{lru_get:<15.5f}{naive_get:<15.5f}")
 
 
 if __name__ == "__main__":
-    run_benchmark()
+    main()
